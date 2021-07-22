@@ -10,9 +10,12 @@ Démarrage :
 
 Le fichier contient 4 fichiers, 2 fichiers python : main.py et fonction.py,  puis un fichier README et requirements.txt
 Avant de lancer le script veillez à avoir télécharger python (voici une url pour le telecharger : https://www.python.org/downloads/ (prenez la dérnière version)
+
 Le fichier requirments.txt est le fichier qui contient tous les modules utilisés par les scripts, sans ceux-là le script ne marche pas.
 	Ouvrez l'invite de commande (écrivez cmd dans la barre de recherche en bas à gauche)
+	
 	Placez vous dans le répértoire ou se trouve les scripts (commande dir pour voir les répértoires présents, et cd pour se placer dedans)
+	
 	Une fois dedans faites python -m pip install -r requirements.txt (La commande va telecharger tous les modules obligatoires au bon fonctionnement du script)
 
 Maintenant tous les modules ont été installé, il ne vous reste plus qu'à découvrir l'utilisation du script
