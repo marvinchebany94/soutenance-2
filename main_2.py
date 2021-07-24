@@ -1,9 +1,20 @@
 #coding:utf-8
 import sys
-from fonction_02 import test_url,directories_exist,scraping_all_site, category_or_book
+from fonction_02 import test_url,directories_exist,scraping_all_site, category_or_book,find_category,count_page,\
+    books_url, book_scraping
 
-#On vérifie qu'il y a bien un argument passé au script
+"""
+Ce script va prendre en compte le paramétre qui sera donné au lancement.
+Le script peut réaliser 3 choses :
+    -scraper un seul livre
+    -scraper tous les livres d'une catégorie précisée
+    -scraper tout le site grâce à la commande -all
+"""
+
 try:
+    """
+    On vérifie l'existence d'un argument passé au script.
+    """
     sys.argv[1]
 except:
     print("Tu dois entrer une url ou bien la commande -all pour télécharger tout le site.")
@@ -18,17 +29,36 @@ else:
     """
     url_or_commande = sys.argv[1]
 
-#On regarde si la commande est une url ou -all
 if url_or_commande == "-all":
     print("Tu vas telecharger tout le site.")
     all_categories_url = scraping_all_site()
-    for url in all_categories_url:
-        category_or_book(url)
+    for link in all_categories_url:
+        test_url(link)
+        url = test_url(link)
+        url_type = category_or_book(link)
+        find_category(url)
+        liste_url_page = count_page(link)
+        print(liste_url_page)
+        for page in liste_url_page:
+            books_url(page)
+            liste_url = books_url(page)
+            for book in liste_url:
+                book_scraping(book, url_type)
 else:
     print("On va voir si ton url est valide ou non.")
     directories_exist()
     test_url(url_or_commande)
     url = test_url(url_or_commande)
-    category_or_book(url)
+    url_type = category_or_book(url)
+    if url_type == "category":
+        find_category(url)
+        liste_url_page = count_page(url)
+        print(liste_url_page)
+        for page in liste_url_page:
+            liste_url = books_url(page)
+            for book in liste_url:
+                book_scraping(book, "category")
+    else:
+        book_scraping(url, url_type)
 
 

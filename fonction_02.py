@@ -20,7 +20,7 @@ def test_url(url_to_test):
     """
     Cette fonction va servir à tester l'url qui a été passé en paramétre,
     :param url_to_test: On passe en paramétre l'url que l'on veut scraper.
-    :return:
+    :return: La fonction retourne simplement l'url passé en paramétre
     """
     if "https://books.toscrape.com/" in url_to_test or url_basique in url_to_test:
 
@@ -35,37 +35,32 @@ def test_url(url_to_test):
     else:
         print("L'url ne correspond pas à celles du site.")
         sys.exit()
-    global url
-    url = url_to_test
+    #global url
+    #url = url_to_test
 
     return url_to_test
 
 def category_or_book(url):
-    #on va voir si l'url provient d'un livre, ou d'une catégorie
+    """
+    La fonction vérifie si l'url correspond à un livre ou à une catégorie
+    :param url: Le paramétre correspond à l'url que tu veux scraper
+    :return: La fonction retourne "book" ou "category"
+    """
+
     if 'category' in url:
         print("La page correspond à une liste de plusieurs livres")
-
-        find_category(url)
-        liste_url_page = count_page(url)
-        print(liste_url_page)
-        for page in liste_url_page:
-            books_url(page)
-            liste_url = books_url(page)
-            for book in liste_url:
-                book_scraping(book, "category")
+        type_url = "category"
 
     else:
         print("L'url correspond à un livre seulement.")
-        book_scraping(url_to_test, "book")
-
-    # on vide la liste d'url au cas ou la personne scrap tout le site entier
-    liste_url = []
+        type_url = "book"
+        #book_scraping(url_to_test, "book")
+    return type_url
 
 def directories_exist():
     """
     Cette fonction sert à vérifier que les répértoires book et catégorie existent.
     Si ce n'est pas le cas la fonction les crée pour nous.
-    :return:
     """
     if os.path.exists(current_path+"\\book"):
         print("Le repertoire book existe.")
@@ -85,7 +80,7 @@ def books_url(url_to_test):
     souhaitée.
     Les url recupérées iront dans une liste nommée liste_url qui nous servira dans d'autres fonctions.
     :param url_to_test: Le paramétre attendu pour cette variable est l'url d'une page de catégorie.
-    :return:
+    :return: La fonction retourne la liste liste_url qui a toutes les url de la catégorie
     """
     #On note l'url de base à placer devant les href
     url_base = "https://books.toscrape.com/catalogue/"
@@ -139,10 +134,10 @@ def count_page(page_to_count):
 
         # On reprend l'url et on change la fin de celle-ci pour atteindre les autres pages
         i = 1
-        url__ = url[0:-10]
+        url = page_to_count[0:-10]
         while i < resultat:
             i += 1
-            url_finale = url__ + "page-" + str(i) + ".html"
+            url_finale = url + "page-" + str(i) + ".html"
             liste_url_page.append(url_finale)
 
     except:
@@ -153,8 +148,7 @@ def count_page(page_to_count):
 
 def find_category(url_to_scrap):
     """
-    Cette fonction sert à trouver la catégorie d'une url de catégorie.
-
+    Cette fonction sert à trouver la catégorie d'une url de catégorie puis de créer un dossier à son nom
     :param url_to_scrap: Le paramétre correspond à une url de catégorie.
     :return:
     """
