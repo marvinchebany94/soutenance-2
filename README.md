@@ -13,7 +13,7 @@ Le fichier contient 4 fichiers, 2 fichiers python : main.py et fonction.py,  pui
 Avant de lancer le script veillez à avoir télécharger python (voici une url pour le telecharger : https://www.python.org/downloads/ (prenez la dérnière version)
 
 Le fichier requirments.txt est le fichier qui contient tous les modules utilisés par les scripts, sans ceux-là le script ne marche pas.
-	Ouvrez l'invite de commande (écrivez cmd dans la barre de recherche en bas à gauche)
+	Ouvrez l'invite de commandes (écrivez cmd dans la barre de recherche en bas à gauche)
 	
 	Placez vous dans le répértoire ou se trouve les scripts (commande dir pour voir les répértoires présents, et cd pour se placer dedans)
 	
@@ -36,7 +36,7 @@ Le script a 3 utilisations différentes :
 	
 Pour scraper l'url d'un livre :
 
-	-On ouvre l'invite de commande (cmd)
+	-On ouvre l'invite de commandes (cmd)
 	
 	-on se place dans le dossier ayant les 2 scripts python
 	
@@ -47,7 +47,7 @@ Pour scraper l'url d'un livre :
 		
 Pour scraper l'url d'une catégorie entière : 
 
-	-On ouvre l'invite de commande (cmd)
+	-On ouvre l'invite de commandes (cmd)
 	
 	-on se place dans le dossier ayant les 2 scripts python
 	
@@ -57,7 +57,7 @@ Pour scraper l'url d'une catégorie entière :
 
 Pour scraper le site entier :
 
-	-On ouvre l'invite de commande (cmd)
+	-On ouvre l'invite de commandes (cmd)
 	
 	-on se place dans le dossier ayant les 2 scripts python
 	
