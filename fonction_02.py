@@ -148,28 +148,38 @@ def count_page(page_to_count):
 
 def find_category(url_to_scrap):
     """
-    Cette fonction sert à trouver la catégorie d'une url de catégorie puis de créer un dossier à son nom
+    Cette fonction sert à trouver la catégorie d'une url de catégorie.
     :param url_to_scrap: Le paramétre correspond à une url de catégorie.
-    :return:
+    :return: La fonction retourne le nom de la catégorie
     """
     req = requests.get(url_to_scrap)
     soup = BeautifulSoup(req.content, features="html.parser")
 
     category_ = soup.find("h1").text
     print("la catégorie est : {}".format(category_))
+    return category_
+
+def category_directory_creating(category):
+    """
+    Cette fonction vérifie l'existence d'un dossier portant la catégorie passée en argument.
+    :param category: Le paramétre correspond au nom de la catégorie que vous voulez vérifier.
+    :return: La fonction retourne "yes" si la catégorie existe, "no" si la catégorie n'existe pas.
+    """
 
     #on va voir si la catégorie est déjà enregistrée dans l'ordinateur
-    if os.path.exists(current_path+"\\catégorie\\"+category_):
+    if os.path.exists(current_path+"\\catégorie\\"+category):
 
         print("Tu as déjà enregistré cette catégorie.")
-        sys.exit()
-
+        #sys.exit()
+        category_already_registred = "yes"
     else:
+        category_already_registred = "no"
         try:
-            os.mkdir(current_path+"\\catégorie\\"+category_)
+            os.mkdir(current_path+"\\catégorie\\"+category)
         except:
             print("Ton dossier n'a pas été créé.")
             sys.exit()
+    return category_already_registred
 
 def book_scraping(book_url, category_or_book):
     """
@@ -197,7 +207,6 @@ def book_scraping(book_url, category_or_book):
     product_page_url = book_url
     universal_product_code = soup.findAll('td')[0].text
 
-    global title
     title = soup.find('h1').text
 
     price_including_taxe = soup.findAll('td')[2].text
