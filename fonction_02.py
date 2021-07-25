@@ -35,6 +35,8 @@ def test_url(url_to_test):
     else:
         print("L'url ne correspond pas à celles du site.")
         sys.exit()
+    #global url
+    #url = url_to_test
 
     return url_to_test
 
@@ -114,8 +116,6 @@ def count_page(page_to_count):
     Pour chaque page trouvée la fonction books_url sera utilisée en lui passant l'url trouvée
     en paramétre.
     :param page_to_count: Le paramétre attendu pour cette fonction est une url menant à une page de catégorie.
-    :return: La fonction renvoie une liste liste_url_page contenant les url de toutes les pages d'une catégorie s'il y
-    en a plusieurs
     """
     #Liste qui contient les url d'une page catégorie
     liste_url_page = [page_to_count]
@@ -150,6 +150,7 @@ def find_category(url_to_scrap):
     """
     Cette fonction sert à trouver la catégorie d'une url de catégorie puis de créer un dossier à son nom
     :param url_to_scrap: Le paramétre correspond à une url de catégorie.
+    :return:
     """
     req = requests.get(url_to_scrap)
     soup = BeautifulSoup(req.content, features="html.parser")
@@ -196,6 +197,7 @@ def book_scraping(book_url, category_or_book):
     product_page_url = book_url
     universal_product_code = soup.findAll('td')[0].text
 
+    global title
     title = soup.find('h1').text
 
     price_including_taxe = soup.findAll('td')[2].text
@@ -340,7 +342,7 @@ def scraping_all_site():
     """
     Cette fonction sert à scraper les url des catégories de tout le site.
     Pour éviter de prendre en compte la 1ere url qui n'est pos une catégorie on vérifie si books_1 se trouve dedans.
-    :return: La fonction retourne une liste "all_categories_url" contenant toutes les url des catégories
+    Si ce n'est pas le cas la fonction test_url se lance pour chaque url de catégorie trouvée.
     """
     obj_req = requests.get("https://books.toscrape.com/index.html")
     soup = BeautifulSoup(obj_req.content, features="html.parser")
