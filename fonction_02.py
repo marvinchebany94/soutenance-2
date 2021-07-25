@@ -35,8 +35,6 @@ def test_url(url_to_test):
     else:
         print("L'url ne correspond pas à celles du site.")
         sys.exit()
-    #global url
-    #url = url_to_test
 
     return url_to_test
 
@@ -54,7 +52,7 @@ def category_or_book(url):
     else:
         print("L'url correspond à un livre seulement.")
         type_url = "book"
-        #book_scraping(url_to_test, "book")
+
     return type_url
 
 def directories_exist():
