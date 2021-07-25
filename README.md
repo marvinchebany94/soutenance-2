@@ -2,9 +2,10 @@
 Script pour scraper un site de livre.
 
 Ce script python va servir à scraper le site web suivant : https://books.toscrape.com/index.html
+
 Qu'est ce que le scraping ? Ce terme désigne le fait d'extraire du contenu d'un site web de manière automatique via l'éxécution d'un script.
 
-! Ce script fonctionne exclusivement avec windows !
+! La présentation sera faite sur windows !
 
 Démarrage :
 
