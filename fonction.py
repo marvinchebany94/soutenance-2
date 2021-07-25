@@ -16,15 +16,11 @@ current_path = os.path.dirname(current_path)
 global category_already_exists
 category_already_exists = []
 
-liste_url = []
-
-#Verification de l'url
 def test_url(url_to_test):
     """
-
-
-    :param url_to_test:
-    :return:
+    Cette fonction va servir à tester l'url qui a été passé en paramétre,
+    :param url_to_test: On passe en paramétre l'url que l'on veut scraper.
+    :return: La fonction retourne simplement l'url passé en paramétre
     """
     if "https://books.toscrape.com/" in url_to_test or url_basique in url_to_test:
 
@@ -40,28 +36,30 @@ def test_url(url_to_test):
         print("L'url ne correspond pas à celles du site.")
         sys.exit()
 
-    global url
-    url = url_to_test
-    global liste_url
+    return url_to_test
 
-    #on va voir si l'url provient d'un livre, ou d'une catégorie
-    if 'category' in url_to_test:
+def category_or_book(url):
+    """
+    La fonction vérifie si l'url correspond à un livre ou à une catégorie
+    :param url: Le paramétre correspond à l'url que tu veux scraper
+    :return: La fonction retourne "book" ou "category"
+    """
+
+    if 'category' in url:
         print("La page correspond à une liste de plusieurs livres")
-
-        find_category(url_to_test)
-        books_url(url_to_test)
-        count_page(url_to_test)
-        for book in liste_url:
-            book_scraping(book, "category")
+        type_url = "category"
 
     else:
         print("L'url correspond à un livre seulement.")
-        book_scraping(url_to_test, "book")
+        type_url = "book"
 
-    # on vide la liste d'url au cas ou la personne scrap tout le site entier
-    liste_url = []
-#vérification des repertoires obligatoires au bon fonctionnement
+    return type_url
+
 def directories_exist():
+    """
+    Cette fonction sert à vérifier que les répértoires book et catégorie existent.
+    Si ce n'est pas le cas la fonction les crée pour nous.
+    """
     if os.path.exists(current_path+"\\book"):
         print("Le repertoire book existe.")
     else:
@@ -74,8 +72,14 @@ def directories_exist():
         print("Le repertoire catégorie& n'existe pas, le script le crée pour vous.")
         os.mkdir(current_path+"\\catégorie")
 
-#dans le cas ou l'url provient d'une page de catégorie, on prendra l'url de tous les livres de la page
 def books_url(url_to_test):
+    """
+    Cette fonction sert à récupérer toutes les url des livres correspondant à la catégorie
+    souhaitée.
+    Les url recupérées iront dans une liste nommée liste_url qui nous servira dans d'autres fonctions.
+    :param url_to_test: Le paramétre attendu pour cette variable est l'url d'une page de catégorie.
+    :return: La fonction retourne la liste liste_url qui a toutes les url de la catégorie
+    """
     #On note l'url de base à placer devant les href
     url_base = "https://books.toscrape.com/catalogue/"
     req = requests.get(url_to_test)
@@ -85,22 +89,35 @@ def books_url(url_to_test):
     #on va chercher l'endroit ou se trouve toutes les url des livres de la catégorie
     url_endroit = soup.find('ol')
     urls = url_endroit.findAll('a')
+
+    #La var liste_url est une liste qui contiendra toutes les url de la page
+    liste_url = []
+
     #on va faire une boucle pour chaque livre présent dans la catégorie et noter l'url dans une liste
-    global liste_url
     for url in urls:
         #comme les urls apparaissent deux fois on crée une variable qui les recupere, si l'url est dedans elle sera
         #ignorée
-        url = url_base+url['href'][9:]
+        url = url_base + url['href'][9:]
         if url not in liste_url:
-            url_liste = url
-            #On commence à la 8eme position car avant il y ../../..
-            print(url)
+
+            #On commence à la 9eme position car avant il y ../../..
             liste_url.append(url)
         else:
             continue
+
     print("\n")
-#On voit si notre page posséde plusieurs pages ou non
+    return liste_url
+
 def count_page(page_to_count):
+    """
+    Cette fonction sert à compter le nombre de page d'une catégorie.
+    Pour chaque page trouvée la fonction books_url sera utilisée en lui passant l'url trouvée
+    en paramétre.
+    :param page_to_count: Le paramétre attendu pour cette fonction est une url menant à une page de catégorie.
+    """
+    #Liste qui contient les url d'une page catégorie
+    liste_url_page = [page_to_count]
+
     #on recupére le nombre de page
     req = requests.get(page_to_count)
     soup = BeautifulSoup(req.content, features="html.parser")
@@ -111,42 +128,71 @@ def count_page(page_to_count):
         print(resultat)
         print('\n')
 
+        #on crée une liste liste_url_page qui contiendra les url des pages
+
         # On reprend l'url et on change la fin de celle-ci pour atteindre les autres pages
         i = 1
-        url__ = url[0:-10]
+        url = page_to_count[0:-10]
         while i < resultat:
             i += 1
-            url_finale = url__ + "page-" + str(i) + ".html"
-            books_url(url_finale)
+            url_finale = url + "page-" + str(i) + ".html"
+            liste_url_page.append(url_finale)
+
     except:
         print("La catégorie ne contient pas plusieurs pages.")
-        books_url(page_to_count)
 
-#on va trouver la catégorie de la page
+    return liste_url_page
+
+
 def find_category(url_to_scrap):
+    """
+    Cette fonction sert à trouver la catégorie d'une url de catégorie.
+    :param url_to_scrap: Le paramétre correspond à une url de catégorie.
+    :return: La fonction retourne le nom de la catégorie
+    """
     req = requests.get(url_to_scrap)
     soup = BeautifulSoup(req.content, features="html.parser")
-    global category_
-    #category_ = soup.findAll('a')[3].text
+
     category_ = soup.find("h1").text
     print("la catégorie est : {}".format(category_))
+    return category_
+
+def category_directory_creating(category):
+    """
+    Cette fonction vérifie l'existence d'un dossier portant la catégorie passée en argument.
+    :param category: Le paramétre correspond au nom de la catégorie que vous voulez vérifier.
+    :return: La fonction retourne "yes" si la catégorie existe, "no" si la catégorie n'existe pas.
+    """
 
     #on va voir si la catégorie est déjà enregistrée dans l'ordinateur
-    if os.path.exists(current_path+"\\catégorie\\"+category_):
+    if os.path.exists(current_path+"\\catégorie\\"+category):
 
         print("Tu as déjà enregistré cette catégorie.")
-        sys.exit()
-
+        #sys.exit()
+        category_already_registred = "yes"
     else:
+        category_already_registred = "no"
         try:
-            os.mkdir(current_path+"\\catégorie\\"+category_)
+            os.mkdir(current_path+"\\catégorie\\"+category)
         except:
             print("Ton dossier n'a pas été créé.")
             sys.exit()
+    return category_already_registred
 
-#on va créer la fonction qui va scraper les url
 def book_scraping(book_url, category_or_book):
-
+    """
+    Cette fonction va avoir plusieurs fonctions. Dans un premier temps elle va scraper
+    le site en allant chercher plusieurs informations (tittre, prix, catégorie etc.)
+    Elle va ensuite créer un fichier csv dans le répértoire correspondant à si l'url
+    est une url de livre ou une url de catégorie.
+    Puis pour finir elle va telecharger l'image et la placer dans le dossier correspondant à son livre.
+    Pour chaque livre la fonction nous indiquera le chemin ou les fichiers se trouvent.
+    :param book_url: Ce paramétre correspond à l'url d'un livre et non d'une catégorie.
+    :param category_or_book: Ce paramétre servira a définir les dossiers ou arriveront les fichiers csv et jpg.
+    Si le param est catégory les fichiers iront dans le dossier "catégorie" et seront dans un dossier
+    portant le nom de la catégorie.
+    Si le param est book, le fichier csv ira dans le dossier "book" dans un dossier portant le nom du livre.
+    """
     # on cree un object soup pour parser le code html
     if category_or_book == "book":
         soup = BeautifulSoup(r.content, features="html.parser")
@@ -159,7 +205,6 @@ def book_scraping(book_url, category_or_book):
     product_page_url = book_url
     universal_product_code = soup.findAll('td')[0].text
 
-    global title
     title = soup.find('h1').text
 
     price_including_taxe = soup.findAll('td')[2].text
@@ -237,9 +282,15 @@ def book_scraping(book_url, category_or_book):
         Retrouvez le fichier csv et la couverture à l'endroit suivant : {}
         '''.format(dir))
 
-#fonction qui va enlever les caracteres spéciaux des titres
-def clean_title(url_to_take_title):
 
+def clean_title(url_to_take_title):
+    """
+    Cette fonction sert à récupérer le titre d'un livre sans caractéres spéciaux
+    pour créer les dossiers/fichiers sans problème.
+    :param url_to_take_title: Le paramétre doit être l'url d'un livre et non d'une catégorie.
+    :return: La fonction retourne la variable title_clean qui correspond au titre du livre sans
+    caractéres spéciaux.
+    """
     title = url_to_take_title.split('/')
     title = title[4:][0]
     title = title.split('_')[0]
@@ -250,9 +301,15 @@ def clean_title(url_to_take_title):
     return title_clean
 
 def number_scrap(obj_soup):
-    #on crée un algorithme qui va verifier chaque caractére de l'object soupe
-    #s'il n'y a pas de nombre, il passe, s'il voit un chiffre il l'ajoute dans une variable afin d'avoir seulement
-    #le nombre de livre restant
+    """
+    on crée un algorithme qui va verifier chaque caractére de l'object soup,
+    s'il n'y a pas de nombre, il passe, s'il voit un chiffre il l'ajoute dans une variable afin d'avoir seulement
+    le nombre de livre restant.
+    :param obj_soup: Le paramétre correspond à la variable soup crée dans la fonction book_scraping nommé
+    number_available.
+    :return: La fonction retourne une variable indiquant un chiffre (le nombre de livres disponibles)
+    """
+    #
 
     #La variable contenant le nombre de livres disponibles. (Sous forme de liste qu'on va joindre à la fin)
     number_available = []
@@ -265,9 +322,14 @@ def number_scrap(obj_soup):
     return number_available
 
 def note_book(obj_soup):
-    #On crée un algoright qui va scraper tous les paragraphes, la note se trouve dans le paragraphe 3
-    #La note est écrite en lettre et en anglais, on va donc vérifier que one/two/three/four/five
-    #se trouve bien dans le texte, et pour chacun de ses mots on assignera un chiffre
+    """
+    On crée un algoright qui va scraper tous les paragraphes, la note se trouve dans le paragraphe 3.
+    La note est écrite en lettre et en anglais, on va donc vérifier que one/two/three/four/five
+    se trouve bien dans le texte, et pour chacun de ses mots on assignera un chiffre.
+    :param obj_soup: Le paramétre correspond à la variable review_rating de la fonction book_scraping.
+    :return: Retourne la variable note qui nous donne un chiffre allant de 1 à 5.
+    """
+
     obj_soup = str(obj_soup)
     if 'One' in obj_soup:
         note = 1
@@ -284,13 +346,23 @@ def note_book(obj_soup):
     return note
 
 def scraping_all_site():
+    """
+    Cette fonction sert à scraper les url des catégories de tout le site.
+    Pour éviter de prendre en compte la 1ere url qui n'est pos une catégorie on vérifie si books_1 se trouve dedans.
+    Si ce n'est pas le cas la fonction test_url se lance pour chaque url de catégorie trouvée.
+    """
     obj_req = requests.get("https://books.toscrape.com/index.html")
     soup = BeautifulSoup(obj_req.content, features="html.parser")
     url_categories = soup.find("ul", class_="nav nav-list")
     url_categories = url_categories.findAll("li")
+
+    #on crée une liste qui prendra toutes les url de catégorie du site
+    all_categories_url = []
     for url_categorie in url_categories:
         url_finale = url_basique + url_categorie.a['href']
         if 'books_1' not in url_finale:
-            test_url(url_finale)
+            all_categories_url.append(url_finale)
+            #category_or_book(url_finale)
         else:
             pass
+    return all_categories_url
