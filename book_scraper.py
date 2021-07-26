@@ -1,6 +1,6 @@
 #coding:utf-8
 import sys
-from fonction import test_url,directories_exist,scraping_all_site, category_or_book,find_category,count_page,\
+from fonctions import test_url,directories_exist,scraping_all_site, category_or_book,find_category,count_page,\
     books_url, book_scraping, category_directory_creating
 
 """
