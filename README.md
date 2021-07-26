@@ -17,7 +17,21 @@ Le fichier requirments.txt est le fichier qui contient tous les modules utilisé
 	
 	Placez vous dans le répértoire ou se trouve les scripts (commande dir pour voir les répértoires présents, et cd pour se placer dedans)
 	
-	Une fois dedans faites python -m pip install -r requirements.txt (La commande va telecharger tous les modules obligatoires au bon fonctionnement du script)
+	On crée notre environnement virtuel :
+	
+	python -m venv env (env est le nom de notre environnement)
+	
+	On active notre environnement :
+	
+	cd env/Scripts
+	
+	activate.bat ou activate
+	
+	Normalement avant le chemin de notre fichier il y aura (env)
+	
+	Le script ne peut pas marcher car il manque les modules, on fait cela :
+	
+	python -m pip install -r requirements.txt 
 
 Maintenant tous les modules ont été installé, il ne vous reste plus qu'à découvrir l'utilisation du script
 
@@ -65,4 +79,4 @@ Pour scraper le site entier :
 	
 	-Le script se lance et va créer un dossier pour chaque catégorie comportant un fichier csv avec le nom de la catégorie, ainsi que toutes les images de la catégorie avec comme nom le code universel du livre.
 	
-	! Veillez à ce que le dossier catégorie soit vide, sinon il y aura une erreur ! ( je vais essayer de régler ça ! )
+	
