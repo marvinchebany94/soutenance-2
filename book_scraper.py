@@ -48,7 +48,7 @@ def main():
             else:
                 pass
     else:
-        print("On va voir si ton url est valide ou non.")
+        print("On va voir si ton url est valide ou non : ")
         directories_exist()
         url = test_url(url_or_commande)
         url_type = category_or_book(url)

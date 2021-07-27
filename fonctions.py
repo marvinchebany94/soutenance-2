@@ -25,7 +25,7 @@ def test_url(url_to_test):
     """
     if URL_HTTPS in url_to_test or URL_HTTP in url_to_test:
 
-        #Global r pour que la variable r soit reprise en dehors de la fonction
+        #Global r pour que la variable r soit reprise en dehors de la fonction (book_scraping)
         global r
         r = requests.get(url_to_test)
         if r.status_code == 200:
@@ -62,13 +62,13 @@ def directories_exist():
     Si ce n'est pas le cas la fonction les crée pour nous.
     """
     if os.path.exists(current_path+"\\book"):
-        print("Le repertoire book existe.")
+        pass
     else:
         print("Le repertoire book n'existe pas, le script le crée pour vous.")
         os.mkdir(current_path+"\\book")
 
     if os.path.exists(current_path+"\\catégorie"):
-        print("Le repertoire catégorie existe.")
+        pass
     else:
         print("Le repertoire catégorie& n'existe pas, le script le crée pour vous.")
         os.mkdir(current_path+"\\catégorie")
@@ -106,7 +106,6 @@ def books_url(url_to_test):
         else:
             continue
 
-    print("\n")
     return liste_url
 
 def count_page(page_to_count):
@@ -184,8 +183,7 @@ def book_scraping(book_url, category_or_book):
     """
     Cette fonction va avoir plusieurs fonctions. Dans un premier temps elle va scraper
     le site en allant chercher plusieurs informations (tittre, prix, catégorie etc.)
-    Elle va ensuite créer un fichier csv dans le répértoire correspondant à si l'url
-    est une url de livre ou une url de catégorie.
+    Elle va ensuite créer un fichier csv dans le répértoire en fonction de la valeur du 2éme paramétre.
     Puis pour finir elle va telecharger l'image et la placer dans le dossier correspondant à son livre.
     Pour chaque livre la fonction nous indiquera le chemin ou les fichiers se trouvent.
     :param book_url: Ce paramétre correspond à l'url d'un livre et non d'une catégorie.
@@ -277,9 +275,9 @@ def book_scraping(book_url, category_or_book):
 
     urllib.request.urlretrieve(image_url_, fichier_img)
     print('''
-        Votre livre a bien été enregistré ainsi que sa page de couverture.
+        Le livre {} a bien été enregistré ainsi que sa page de couverture.
         Retrouvez le fichier csv et la couverture à l'endroit suivant : {}
-        '''.format(dir))
+        '''.format(title, dir))
 
 
 def clean_title(url_to_take_title):
@@ -295,7 +293,6 @@ def clean_title(url_to_take_title):
     title = title.split('_')[0]
     title = title.split('-')
     title_clean = ' '.join(title)
-    print(title_clean)
 
     return title_clean
 
