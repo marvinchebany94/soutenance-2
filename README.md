@@ -9,12 +9,14 @@ Qu'est ce que le scraping ? Ce terme désigne le fait d'extraire du contenu d'un
 
 Démarrage :
 
-Le fichier contient 4 fichiers, 2 fichiers python : main.py et fonction.py,  puis un fichier README et requirements.txt
+Le fichier contient 4 fichiers, 2 fichiers python : book_scraper.py et fonctions.py,  puis un fichier README et requirements.txt
 Avant de lancer le script veillez à avoir télécharger python (voici une url pour le telecharger : https://www.python.org/downloads/ (prenez la dérnière version)
 
 Le fichier requirments.txt est le fichier qui contient tous les modules utilisés par les scripts, sans ceux-là le script ne marche pas.
 
-On va maintenant télécharger le dossier entier via github. Le dossier sera .zip, on va donc décompresser le dossier, puis le placer sur notre bureau.
+Le fichier README sert à comprendre comment utiliser le script.
+
+On va maintenant télécharger le dossier entier via github. Le dossier sera un .zip, on va donc décompresser le dossier, puis le placer sur notre bureau.
 
 	Ouvrez l'invite de commandes (écrivez cmd dans la barre de recherche en bas à gauche)
 	
@@ -42,7 +44,7 @@ Utilisation du script:
 
 ! Veillez à entrer seulement 1 seul argument après le nom du script ou le script ne fonctionnera pas !
 
-Le script que l'on utilise est main.py, fonction.py contient seulement les fonctions servant à scraper etc. 
+Le script que l'on utilise est book_scraper.py, fonctions.py contient seulement les fonctions servant à scraper etc. 
 Le script a 3 utilisations différentes : 
 
 	-permet de scraper un livre seulement
