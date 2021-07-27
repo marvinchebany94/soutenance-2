@@ -13,6 +13,9 @@ Le fichier contient 4 fichiers, 2 fichiers python : main.py et fonction.py,  pui
 Avant de lancer le script veillez à avoir télécharger python (voici une url pour le telecharger : https://www.python.org/downloads/ (prenez la dérnière version)
 
 Le fichier requirments.txt est le fichier qui contient tous les modules utilisés par les scripts, sans ceux-là le script ne marche pas.
+
+On va maintenant télécharger le dossier entier via github. Le dossier sera .zip, on va donc décompresser le dossier, puis le placer sur notre bureau.
+
 	Ouvrez l'invite de commandes (écrivez cmd dans la barre de recherche en bas à gauche)
 	
 	Placez vous dans le répértoire ou se trouve les scripts (commande dir pour voir les répértoires présents, et cd pour se placer dedans)
@@ -29,7 +32,7 @@ Le fichier requirments.txt est le fichier qui contient tous les modules utilisé
 	
 	Normalement avant le chemin de notre fichier il y aura (env)
 	
-	Le script ne peut pas marcher car il manque les modules, on fait cela :
+	Le script ne peut pas marcher car il manque les modules, afin de les télécharger nous faisons cela :
 	
 	python -m pip install -r requirements.txt 
 
