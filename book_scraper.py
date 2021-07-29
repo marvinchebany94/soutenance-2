@@ -29,8 +29,12 @@ def main():
         """
         url_or_commande = sys.argv[1]
 
+    #on vérifie l'existence des dossiers book et catégorie
+    directories_exist()
+
     if url_or_commande == "-all":
         print("Tu vas telecharger tout le site.")
+
         all_categories_url = scraping_all_site()
         for link in all_categories_url:
             url = test_url(link)
@@ -49,7 +53,6 @@ def main():
                 pass
     else:
         print("On va voir si ton url est valide ou non : ")
-        directories_exist()
         url = test_url(url_or_commande)
         url_type = category_or_book(url)
         if url_type == "category":
