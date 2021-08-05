@@ -70,7 +70,7 @@ def directories_exist():
     if os.path.exists(current_path+"\\catégorie"):
         pass
     else:
-        print("Le repertoire catégorie& n'existe pas, le script le crée pour vous.")
+        print("Le repertoire catégorie n'existe pas, le script le crée pour vous.")
         os.mkdir(current_path+"\\catégorie")
 
 def books_url(url_to_test):
